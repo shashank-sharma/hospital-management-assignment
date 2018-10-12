@@ -1,0 +1,75 @@
+.main-body {
+  background: linear-gradient(to right, #006dff, #810dd8);
+  height: 100vh;
+  position: fixed;
+  width: 100vw;
+  overflow-y: scroll;
+}
+
+.dashboard-left {
+  margin-bottom: 0;
+  overflow-y: scroll;
+}
+
+.patient-list {
+  /*background-image: url("https://image.ibb.co/g3F8fp/White_logo.png");*/
+  /*background-size: 100%;*/
+  /*background-repeat: no-repeat;*/
+  width: 350px;
+  transition: width .7s;
+}
+
+.patient-list-container {
+  padding: 0;
+}
+
+.dashboard-options {
+  padding: 10px;
+  background-color: #ebebeb;
+}
+
+.patient-card {
+  margin-top: 5vh;
+  height: 90vh;
+}
+
+.patient-info-card {
+  padding: 15px;
+  border-bottom: 1px solid #e6e6e6;
+  width: 50%;
+}
+
+.search-patient {
+  margin-top: 0.5rem;
+}
+
+.search-patient-background {
+  background-color: #f9f9f9;
+}
+
+.patient-search-icon {
+  font-size: 1.7rem;
+  line-height: 1.9;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.patient-text {
+  font-size: 0.7rem;
+  color: black;
+}
+
+.patient-date {
+  font-size: 0.7rem;
+  color: #cdcdcd;
+}
+
+.patient-name {
+  font-size: 1rem;
+  color: black;
+  font-style: bold;
+}
+
+.patient-info-card:hover {
+  background-color: #e8e8e8 !important;
+}

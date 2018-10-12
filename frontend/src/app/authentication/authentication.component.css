@@ -1,0 +1,92 @@
+.main-body {
+  background: linear-gradient(to right, #006dff, #810dd8);
+  height: 100vh;
+  position: fixed;
+  width: 100vw;
+  overflow-y: scroll;
+}
+
+input, select, textarea{
+  color: white;
+}
+
+.intro {
+  margin-top: 50px;
+  width: 100%;
+  border-top: 1px solid black;
+  padding-right: 20px;
+}
+.content {
+  padding-left: 1em;
+  display: inline-block;
+}
+.form-group {
+  margin: 1em 0;
+}
+.form-group label {
+  display: inline-block;
+}
+.form-group input {
+  width: 100%;
+}
+
+.main-card {
+  padding-top: 30px;
+}
+
+.password-strength {
+  opacity: .8;
+  width:150px;
+  height:0;
+  transition: height .7s;
+  background: black;
+  transform: rotatex(180deg) translate3d(0, -600px,0);/* the Y-Value shall be higher than the height on hover*/
+  transform-origin: top;
+  bottom: 0;
+}
+
+.password-strength:hover {
+  height: 600px;
+}
+
+.sign-up-card {
+  height: 600px;
+}
+
+.here {
+  /*background-image: url("https://image.ibb.co/g3F8fp/White_logo.png");*/
+  /*background-size: 100%;*/
+  /*background-repeat: no-repeat;*/
+  width: 350px;
+  transition: width .7s;
+}
+
+.ab-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*.here:hover {*/
+/*width: 900px;*/
+/**/
+/*}*/
+
+.card-stacked .progress {
+  position: absolute;
+  background-color: orange;
+  margin: 0;
+}
+
+.password-status {
+  z-index: 999;
+  position : absolute;
+  height : 60%;
+  bottom: 5%;
+  padding-left: 130px;
+}
+
+.info-submit {
+  vertical-align: bottom;
+  padding-bottom: 10px;
+}

@@ -1,0 +1,124 @@
+<div class="main-body">
+<div class="container main-card">
+  <div class="col l6 m12 s12">
+    <div class="row">
+      <div class="col s12 blog-content black-text" style="display: block;">
+        <div class="white-text flow-text center-align">
+          <div *ngIf="signup">
+            Sign Up
+          </div>
+          <div *ngIf="!signup">
+            Login
+          </div>
+        </div>
+        <div class="card horizontal z-depth-4 sign-up-card white-text" id="clone">
+
+          <!-- Left side of the card -->
+          <div class="here hide-on-med-and-down grey darken-4" id="login">
+            <img *ngIf="!signup" class="center-align ab-logo" src=""
+                 height="180vh">
+            <img *ngIf="signup" style="position: absolute" class="center-align ab-logo"
+                 src="" height="180vh">
+
+            <div *ngIf="!signup">
+              <form [formGroup]="loginJson">
+                <div class="input-field col l8 m12 s12 offset-l2">
+                  <input id="username" type="text" class="validate" data-length="50"
+                         autocomplete="off" [formControlName]="'username'">
+                  <label for="username">Username</label>
+                </div>
+                <div class="input-field col l8 m12 s12 offset-l2">
+                  <input id="login-password" type="password" class="validate" data-length="50"
+                         autocomplete="off" [formControlName]="'password'">
+                  <label for="login-password">Password</label>
+                </div>
+                <div class="input-field col l8 m12 s12 offset-l2">
+                  <button class="btn blue submit" (click)="checkLoginStatus()">Submit</button>
+                </div>
+                <div class="col l8 m12 s12 offset-l2">
+                  <br>
+                  <br>
+                  <a href="javascript: void(0);" (click)="changePage()">Sign up ?</a>
+                </div>
+              </form>
+            </div>
+
+            <div *ngIf="signup">
+              <div class="password-status" *ngIf="strength >= 1">
+                <i class="material-icons large">fingerprint</i>
+                <p class="password-status-text center" style="font-size: 0.8rem">{{ passwordStatus }}</p>
+              </div>
+              <div class="card-image black-text password-strength"
+                   id="password-indicator" style="width: 350px;max-width: 100%;">
+              </div>
+            </div>
+          </div>
+          <!-- Right side of the card -->
+          <div *ngIf="!signup" class="card-stacked" style="background: #2c2c2c;">
+
+          </div>
+          <div *ngIf="signup" class="card-stacked" style="background: #2c2c2c;">
+            <div class="progress" style="display: none;">
+              <div class="indeterminate"></div>
+            </div>
+            <div class="row" style="margin-left: 0; margin-right: 0;padding: 50px;">
+              <div class="content">
+                <form [formGroup]="inputJson" id="signup-form">
+                  <!--<p>JSON Output (Need to remove)</p>-->
+                  <!--<div>-->
+                  <!--<pre><code>{{ inputJson?.value | json }}</code></pre>-->
+                  <!--</div>-->
+                  <div class="input-field col l8 m12 s12">
+                    <input id="email" type="email" class="validate" data-length="50"
+                           autocomplete="off" [formControlName]="'email'">
+                    <label for="email" id="label-email">Email</label>
+                  </div>
+                  <div class="input-field col l8 m12 s12">
+                    <input id="fullname" type="text" class="validate" data-length="50"
+                           autocomplete="off" [formControlName]="'fullname'">
+                    <label for="fullname">Full Name</label>
+                  </div>
+                  <div class="input-field col l8 m12 s12">
+
+                    <input materialize="pickadate" type="text" id="dob"
+                           class="timepicker" [formControlName]="'dob'" autocomplete="off">
+                    <label for="dob" id="label-dob">DOB</label>
+                  </div>
+                  <div class="col l8 m12 s12">
+                    <input class="with-gap" type="radio" value="male" id="male" name="gender" formControlName="gender"/>
+                    <label for="male">Male</label>
+                    <input class="with-gap" type="radio" value="female" id="female" name="gender"
+                           formControlName="gender"/>
+                    <label for="female">Female</label>
+                  </div>
+                  <div class="input-field col l8 m12 s12">
+                    <input id="password" type="password" class="validate" data-length="20"
+                           autocomplete="off" (keyup)="checkStrength($event.target.value)"
+                           [formControlName]="'password'">
+                    <label for="password">Password</label>
+                    <p class="password-status-text hide-on-large-only" style="font-size: 0.8rem"></p>
+                    <div class="progress hide-on-large-only" style="width: 100px;">
+                      <div class="determinate small-password" id="small-password" style="width: 0"></div>
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+                  <div class="col s12">
+                    <button class="btn blue submit" [disabled]="!email || !fullname || !dob || !gender || !password">
+                      Submit
+                    </button>
+                  </div>
+                </form>
+                <div class="col s12 m12 l12">
+                  <br>
+                  <a href="javascript: void(0);" (click)="changePage()">Login ?</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
