@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from '../../environments/environment';
+import {AuthenticationService} from '../authentication.service';
+import {Router} from "@angular/router";
+
+declare var Materialize: any;
 
 @Component({
   selector: 'app-authentication',
@@ -12,30 +16,33 @@ export class AuthenticationComponent implements OnInit {
 
   strength = 0;
   signup = true;
-  email = false;
-  fullname = false;
-  dob = false;
+  phone_number = false;
+  first_name = false;
+  last_name = false;
   gender = false;
   password = false;
   inputJson: any;
   loginJson: any;
   passwordStatus: any;
   dateOptions: any;
+  registerLoad = false;
+  loginLoad = false;
 
   constructor(private formBuilder: FormBuilder,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private authenticationService: AuthenticationService,
+              private router: Router) {
 
     this.inputJson = this.formBuilder.group({
-      email: [''],
-      fullname: [''],
-      dob: [''],
+      phone_number: [''],
+      first_name: [''],
+      last_name: [''],
       gender: [''],
       password: [''],
     });
 
     this.loginJson = this.formBuilder.group({
-      username: [''],
-      email: [''],
+      phone_number: [''],
       password: [''],
     });
 
@@ -46,18 +53,25 @@ export class AuthenticationComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (window.screen.width < 1200) {
+      console.log('yes');
+        document.getElementById('login').style.width = 0 + 'px';
+    }
   }
 
-  verifyEmail(email) {
-    const regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email) && email.length <= 50;
+  verifyPhoneNumber(phone_number) {
+    return phone_number.length >= 8 && phone_number.length < 11;
   }
 
   verifyPassword(password) {
     return password.length > 6 && password.length <= 20;
   }
 
-  verifyFullname(name) {
+  verifyFirstname(name) {
+    return name.length > 3 && name.length <= 50;
+  }
+
+  verifyLastname(name) {
     return name.length > 3 && name.length <= 50;
   }
 
@@ -94,40 +108,57 @@ export class AuthenticationComponent implements OnInit {
   }
 
   validateForm() {
+    console.log(this.inputJson.getRawValue());
     // User name is there or not
-    this.email = this.verifyEmail(this.inputJson.get('email').value);
-    this.fullname = this.verifyFullname(this.inputJson.get('fullname').value);
+    this.phone_number = this.verifyPhoneNumber(this.inputJson.get('phone_number').value);
+    this.first_name = this.verifyFirstname(this.inputJson.get('first_name').value);
+    this.last_name = this.verifyLastname(this.inputJson.get('last_name').value);
     this.password = this.verifyPassword(this.inputJson.get('password').value);
     this.gender = this.verifyGender(this.inputJson.get('gender').value);
-    this.dob = this.verifyDob(this.inputJson.get('dob').value);
-    console.log(this.email, this.fullname, this.password, this.gender, this.dob);
+    console.log(this.phone_number, this.first_name, this.password, this.gender, this.last_name);
   }
 
   changePage() {
-    if (this.signup) {
-      document.getElementById('login').style.width = 700 + 'px';
+    console.log('asd =', window.screen.width);
+    if (window.screen.width > 1200) {
+      if (this.signup) {
+        document.getElementById('login').style.width = 700 + 'px';
+      } else {
+        document.getElementById('login').style.width = 350 + 'px';
+      }
     } else {
-      document.getElementById('login').style.width = 350 + 'px';
+      console.log('this is it');
+      if (this.signup) {
+        document.getElementById('login').style.width = 700 + 'px';
+      } else {
+        document.getElementById('login').style.width = 0 + 'px';
+      }
     }
     this.signup = !this.signup;
   }
 
   checkLoginStatus() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      withCredentials: true
-    };
-    console.log(this.loginJson.getRawValue());
+    this.loginLoad = true;
+    this.authenticationService.loginUser(this.loginJson.getRawValue()).subscribe((response: any) => {
+      if (response.id) {
+        localStorage.setItem('id', response.id);
+        localStorage.setItem('token', response.token);
+        this.router.navigate(['dashboard']);
+      } else {
+        Materialize.toast('Wrong Password', 4000);
+      }
+    })
+  }
 
-    this.http.post(environment.apiUrl + '/rest-auth/login/', this.loginJson.getRawValue(), httpOptions).subscribe((response) => {
-      console.log(response);
-    }, (error) => {
-      console.log(error);
-      console.log('Username or password is incorrect');
-    });
-
+  checkRegisterStatus() {
+    this.registerLoad = true;
+    const data = this.authenticationService.registerUser(this.inputJson.getRawValue());
+    if (data) {
+      this.registerLoad = false;
+      Materialize.toast('Successfully Registed', 4000);
+      Materialize.toast('Now please log in', 4000);
+      this.changePage();
+    }
   }
 
 }

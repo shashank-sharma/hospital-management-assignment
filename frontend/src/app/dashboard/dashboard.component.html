@@ -2,10 +2,53 @@
   <div class="row">
     <div class="col s12 m12 l10 offset-l1">
       <div class="card horizontal z-depth-4 white-text patient-card">
-        <div class="patient-list dashboard-left">
+
+        <div class="patient-list dashboard-left add-details white black-text" id="add-details">
+          <div class="col s12 l12 m12" style="padding-top: 40px;background: #2c2c2c;">
+            <a href="javascript: void(0);" (click)="addDetails()">
+              <i class="small material-icons left" style="color: white;padding: 10px;">arrow_back</i>
+            </a>
+            <span class="flow-text white-text" style="padding-top: 7px;position:absolute;">Add Details</span>
+          </div>
+
+          <div class="col s12 m12 l12">
+            <form [formGroup]="patientDetailsJson">
+              <div class="input-field col s12">
+                <input id="patient_name" type="text" class="validate" data-length="50"
+                       autocomplete="off" [formControlName]="'patient_name'">
+                <label for="patient_name">Patient Name</label>
+              </div>
+              <div class="col s12">
+                <input class="with-gap" type="radio" value="male" id="male" name="gender" formControlName="gender"/>
+                <label for="male">Male</label>
+                <input class="with-gap" type="radio" value="female" id="female" name="gender"
+                       formControlName="gender"/>
+                <label for="female">Female</label>
+              </div>
+              <div class="input-field col s12">
+                <input id="email" type="text" class="validate" data-length="50"
+                       autocomplete="off" [formControlName]="'email'">
+                <label for="email">Email</label>
+              </div>
+              <div class="input-field col s12">
+                <input id="phone_number" type="text" class="validate" data-length="50"
+                       autocomplete="off" [formControlName]="'phone_number'">
+                <label for="phone_number">Phone Number</label>
+              </div>
+
+              <button class="btn flat" (click)="savePatientDetails()">Save</button>
+            </form>
+          </div>
+        </div>
+        <div class="patient-list dashboard-left" id="patient-list-ajax" (scroll)="getScrollData()">
           <div class="row" style="margin-bottom: 0">
             <div class="col s12 m12 l12 dashboard-options">
-              <i class="small material-icons right" style="color: black">add</i>
+              <a href="javascript: void(0);" (click)="addDetails()">
+                <i class="small material-icons right" style="color: black">add</i>
+              </a>
+              <a href="javascript: void(0);" (click)="refreshDetails()">
+                <i class="small material-icons right" style="color: black">refresh</i>
+              </a>
             </div>
             <div class="col s12 m12 l12 search-patient-background black-text">
               <div class="input-field search-patient">
@@ -14,25 +57,65 @@
               </div>
             </div>
             <!-- Patient cards -->
-            <a href="#">
-            <div class="col s12 m12 l12 white patient-info-card">
-              <div class="patient-name">Shashank Sharma</div>
-             <span class="patient-text">#112233 | 7898914383</span>
-              <span class="right patient-date">11/22/33</span>
-            </div></a>
-            <a href="#">
-              <div class="col s12 m12 l12 white patient-info-card">
-                <div class="patient-name">Shashank Sharma</div>
-                <span class="patient-text">#112233</span>
-                <span class="right patient-date">11/22/33</span>
-              </div></a>
+            <div *ngIf="patientDetails.length == 0">
+              <div class="preloader-wrapper small active center-loader">
+                <div class="spinner-layer spinner-green-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="gap-patch">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngFor="let patientDetail of patientDetails">
+              <a href="javascript: void(0);" (click)="showDetails(patientDetail.id)">
+                <div class="col s12 m12 l12 white patient-info-card">
+                  <div class="patient-name">{{patientDetail.patient_name}}</div>
+                  <span class="patient-text">#{{patientDetail.id}} | {{patientDetail.phone_number}}</span>
+                  <span class="right patient-date">{{beautifyDate(patientDetail.date_created)}}</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
         <div class="card-content white-text">
-
-          <span class="card-title">Card Title</span>
-          <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
+          <div *ngIf="showMain">
+            <a href="javascript: void(0);" (click)="closeMain()" style="">
+              <i class="small material-icons right" style="color: black">close</i>
+            </a>
+            <form [formGroup]="patientEditDetailsJson">
+              <span class="flow-text black-text">ID: #{{patientEditDetailsJson.controls['id'].value}}</span>
+              <div class="input-field col s12 black-text">
+                <input id="patient_name_edit" type="text" class="validate" data-length="50"
+                       autocomplete="off" [formControlName]="'patient_name'">
+              </div>
+              <div class="col s12">
+                <span class="black-text">Gender: {{patientEditDetailsJson.controls['gender'].value}}</span><br>
+                <input class="with-gap black-text" type="radio" value="male" id="male_edit" name="gender"
+                       formControlName="gender"/>
+                <label for="male_edit">Male</label>
+                <input class="with-gap black-text" type="radio" value="female" id="female_edit" name="gender"
+                       formControlName="gender"/>
+                <label for="female_edit">Female</label>
+              </div>
+              <div class="input-field col s12 black-text">
+                <input id="email_edit" type="text" class="validate" data-length="50"
+                       autocomplete="off" [formControlName]="'email'">
+              </div>
+              <div class="input-field col s12 black-text">
+                <input id="phone_number_edit" type="text" class="validate" data-length="50"
+                       autocomplete="off" [formControlName]="'phone_number'">
+              </div>
+              <div class="col s12">
+                <button class="btn flat" (click)="updatePatientDetails()">Update</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

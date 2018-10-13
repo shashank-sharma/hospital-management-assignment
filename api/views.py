@@ -61,3 +61,7 @@ class PatientDetailsAPIUpdate(APIView):
             return Response(True)
         else:
             return Response(serializer.errors)
+
+
+def home(request):
+    return request('index.html')

@@ -16,13 +16,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
-from api.views import PatientDetailsAPIView, UserViewSet
+from api.views import PatientDetailsAPIView, UserViewSet, home
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'patient', PatientDetailsAPIView)
 
 urlpatterns = [
+    url(r'^$',home),
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/', include(router.urls)),
     url(r'^api/', include('api.urls')),

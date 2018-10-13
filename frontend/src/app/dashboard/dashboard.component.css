@@ -61,7 +61,7 @@
 
 .patient-date {
   font-size: 0.7rem;
-  color: #cdcdcd;
+  color: #afafaf;
 }
 
 .patient-name {
@@ -72,4 +72,17 @@
 
 .patient-info-card:hover {
   background-color: #e8e8e8 !important;
+}
+
+.add-details {
+  position: absolute;
+  height: 90vh;
+  width: 0;
+  z-index: 1;
+  transition: width .7s;
+}
+
+.center-loader {
+  top: 100%;
+  left: 40%;
 }

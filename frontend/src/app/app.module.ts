@@ -9,6 +9,18 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { HttpClientModule } from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
+import { AuthenticationService } from "./authentication.service";
+import { DashboardService } from "./dashboard.service";
+import { RouterModule, Routes } from '@angular/router';
+
+
+const appRoutes: Routes = [
+  {path: '', component: AuthenticationComponent},
+  {path: 'dashboard', component: DashboardComponent}
+];
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,9 +31,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes),
   ],
-  providers: [],
+  providers: [AuthenticationService, DashboardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -14,7 +14,10 @@
         <div class="card horizontal z-depth-4 sign-up-card white-text" id="clone">
 
           <!-- Left side of the card -->
-          <div class="here hide-on-med-and-down grey darken-4" id="login">
+          <div class="here grey darken-4" id="login">
+            <div class="progress" *ngIf="loginLoad">
+              <div class="indeterminate"></div>
+            </div>
             <img *ngIf="!signup" class="center-align ab-logo" src=""
                  height="180vh">
             <img *ngIf="signup" style="position: absolute" class="center-align ab-logo"
@@ -23,9 +26,9 @@
             <div *ngIf="!signup">
               <form [formGroup]="loginJson">
                 <div class="input-field col l8 m12 s12 offset-l2">
-                  <input id="username" type="text" class="validate" data-length="50"
-                         autocomplete="off" [formControlName]="'username'">
-                  <label for="username">Username</label>
+                  <input id="phone_number" type="text" class="validate" data-length="50"
+                         autocomplete="off" [formControlName]="'phone_number'">
+                  <label for="phone_number">Phone Number</label>
                 </div>
                 <div class="input-field col l8 m12 s12 offset-l2">
                   <input id="login-password" type="password" class="validate" data-length="50"
@@ -58,7 +61,7 @@
 
           </div>
           <div *ngIf="signup" class="card-stacked" style="background: #2c2c2c;">
-            <div class="progress" style="display: none;">
+            <div class="progress" *ngIf="registerLoad">
               <div class="indeterminate"></div>
             </div>
             <div class="row" style="margin-left: 0; margin-right: 0;padding: 50px;">
@@ -69,20 +72,19 @@
                   <!--<pre><code>{{ inputJson?.value | json }}</code></pre>-->
                   <!--</div>-->
                   <div class="input-field col l8 m12 s12">
-                    <input id="email" type="email" class="validate" data-length="50"
-                           autocomplete="off" [formControlName]="'email'">
-                    <label for="email" id="label-email">Email</label>
+                    <input id="phonenumber" type="text" class="validate" data-length="10"
+                           autocomplete="off" [formControlName]="'phone_number'">
+                    <label for="phonenumber">Phone Number</label>
                   </div>
                   <div class="input-field col l8 m12 s12">
-                    <input id="fullname" type="text" class="validate" data-length="50"
-                           autocomplete="off" [formControlName]="'fullname'">
-                    <label for="fullname">Full Name</label>
+                    <input id="firstname" type="text" class="validate" data-length="50"
+                           autocomplete="off" [formControlName]="'first_name'">
+                    <label for="firstname">First Name</label>
                   </div>
                   <div class="input-field col l8 m12 s12">
-
-                    <input materialize="pickadate" type="text" id="dob"
-                           class="timepicker" [formControlName]="'dob'" autocomplete="off">
-                    <label for="dob" id="label-dob">DOB</label>
+                    <input id="lastname" type="text" class="validate" data-length="50"
+                           autocomplete="off" [formControlName]="'last_name'">
+                    <label for="lastname">Last Name</label>
                   </div>
                   <div class="col l8 m12 s12">
                     <input class="with-gap" type="radio" value="male" id="male" name="gender" formControlName="gender"/>
@@ -104,7 +106,7 @@
                     <br>
                   </div>
                   <div class="col s12">
-                    <button class="btn blue submit" [disabled]="!email || !fullname || !dob || !gender || !password">
+                    <button class="btn blue submit" [disabled]="!phone_number || !first_name || !last_name || !gender || !password" (click)="checkRegisterStatus()">
                       Submit
                     </button>
                   </div>
