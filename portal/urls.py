@@ -16,9 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
-from api.views import PatientDetailsAPIView
+from api.views import PatientDetailsAPIView, UserViewSet
 
 router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
 router.register(r'patient', PatientDetailsAPIView)
 
 urlpatterns = [

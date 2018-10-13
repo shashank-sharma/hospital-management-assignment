@@ -5,9 +5,10 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from accounts.serializers import PatientDetailsSerializer
+from accounts.serializers import PatientDetailsSerializer, UserSerializer
 from accounts.models import PatientDetails
 from rest_framework import viewsets
+from accounts.models import User
 #
 # # Create your views here.
 # from rest_framework.generics import ListAPIView
@@ -34,6 +35,11 @@ class PatientDetailsAPIView(viewsets.ModelViewSet):
     queryset = PatientDetails.objects.all()
     serializer_class = PatientDetailsSerializer
     pagination_class = LimitOffsetPagination
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class PatientDetailsAPIUpdate(APIView):
