@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {FormBuilder} from "@angular/forms";
 import {DashboardService} from "../dashboard.service";
@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit {
     let a = document.getElementById('patient-list-ajax').scrollTop;
     let b = document.getElementById('patient-list-ajax').offsetHeight;
     let c = document.getElementById('patient-list-ajax').scrollHeight;
-    console.log(a+b+20, c);
+    console.log(a + b + 20, c);
     if ((a + b + 20 > c) && !this.scrollRequest && !this.complete) {
       console.log('requesting');
       this.scrollRequest = true;
@@ -96,6 +96,7 @@ export class DashboardComponent implements OnInit {
 
   // Refresh patient list and show latest data
   refreshDetails() {
+    this.complete = false;
     this.patientDetails = [];
     this.dashboardService.getPatientList(false).subscribe((response: any) => {
       console.log(response);
@@ -112,7 +113,7 @@ export class DashboardComponent implements OnInit {
   // On click show main card (right one) and update form group
   showDetails(id) {
     this.showMain = true;
-    for(let i = 0; i < this.patientDetails.length; i++) {
+    for (let i = 0; i < this.patientDetails.length; i++) {
       if (this.patientDetails[i].id == id) {
         this.patientEditDetailsJson = this.formBuilder.group({
           id: [this.patientDetails[i].id],

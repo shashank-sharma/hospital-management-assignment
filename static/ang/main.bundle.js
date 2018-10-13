@@ -249,6 +249,7 @@ var AuthenticationComponent = /** @class */ (function () {
         this.password = false;
         this.registerLoad = false;
         this.loginLoad = false;
+        // Set up initial values
         this.inputJson = this.formBuilder.group({
             phone_number: [''],
             first_name: [''],
@@ -260,16 +261,19 @@ var AuthenticationComponent = /** @class */ (function () {
             phone_number: [''],
             password: [''],
         });
+        // On value change validate
         this.inputJson.valueChanges.subscribe(function (val) {
             _this.validateForm();
         });
     }
     AuthenticationComponent.prototype.ngOnInit = function () {
+        // Make sure it is mobile compatible
         if (window.screen.width < 1200) {
             console.log('yes');
             document.getElementById('login').style.width = 0 + 'px';
         }
     };
+    // Verify all input fields
     AuthenticationComponent.prototype.verifyPhoneNumber = function (phone_number) {
         return phone_number.length >= 8 && phone_number.length < 11;
     };
@@ -288,6 +292,7 @@ var AuthenticationComponent = /** @class */ (function () {
     AuthenticationComponent.prototype.verifyDob = function (dob) {
         return dob.length > 1;
     };
+    // Check password strength based of regex
     AuthenticationComponent.prototype.checkStrength = function (password) {
         console.log(password);
         var passwordStatus = document.getElementsByClassName('password-status-text')[0];
@@ -320,6 +325,7 @@ var AuthenticationComponent = /** @class */ (function () {
         document.getElementById('password-indicator').style.height = this.strength * 120 + 'px';
         document.getElementById('small-password').style.width = 20 * this.strength + '%';
     };
+    // Client side form validation
     AuthenticationComponent.prototype.validateForm = function () {
         console.log(this.inputJson.getRawValue());
         // User name is there or not
@@ -330,6 +336,7 @@ var AuthenticationComponent = /** @class */ (function () {
         this.gender = this.verifyGender(this.inputJson.get('gender').value);
         console.log(this.phone_number, this.first_name, this.password, this.gender, this.last_name);
     };
+    // Change page from signup to log in and likewise
     AuthenticationComponent.prototype.changePage = function () {
         console.log('asd =', window.screen.width);
         if (window.screen.width > 1200) {
@@ -351,6 +358,7 @@ var AuthenticationComponent = /** @class */ (function () {
         }
         this.signup = !this.signup;
     };
+    // Login user and redirect him to dashboard by saving token and id in localstorage
     AuthenticationComponent.prototype.checkLoginStatus = function () {
         var _this = this;
         this.loginLoad = true;
@@ -365,6 +373,7 @@ var AuthenticationComponent = /** @class */ (function () {
             }
         });
     };
+    // Register given user and ask him to log in
     AuthenticationComponent.prototype.checkRegisterStatus = function () {
         var _this = this;
         this.registerLoad = true;
@@ -473,7 +482,7 @@ module.exports = module.exports.toString();
 /***/ "./src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-body\">\n  <div class=\"row\">\n    <div class=\"col s12 m12 l10 offset-l1\">\n      <div class=\"card horizontal z-depth-4 white-text patient-card\">\n\n        <div class=\"patient-list dashboard-left add-details white black-text\" id=\"add-details\">\n          <div class=\"col s12 l12 m12\" style=\"padding-top: 40px;background: #2c2c2c;\">\n            <a href=\"javascript: void(0);\" (click)=\"addDetails()\">\n              <i class=\"small material-icons left\" style=\"color: white;padding: 10px;\">arrow_back</i>\n            </a>\n            <span class=\"flow-text white-text\" style=\"padding-top: 7px;position:absolute;\">Add Details</span>\n          </div>\n\n          <div class=\"col s12 m12 l12\">\n            <form [formGroup]=\"patientDetailsJson\">\n              <div class=\"input-field col s12\">\n                <input id=\"patient_name\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'patient_name'\">\n                <label for=\"patient_name\">Patient Name</label>\n              </div>\n              <div class=\"col s12\">\n                <input class=\"with-gap\" type=\"radio\" value=\"male\" id=\"male\" name=\"gender\" formControlName=\"gender\"/>\n                <label for=\"male\">Male</label>\n                <input class=\"with-gap\" type=\"radio\" value=\"female\" id=\"female\" name=\"gender\"\n                       formControlName=\"gender\"/>\n                <label for=\"female\">Female</label>\n              </div>\n              <div class=\"input-field col s12\">\n                <input id=\"email\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'email'\">\n                <label for=\"email\">Email</label>\n              </div>\n              <div class=\"input-field col s12\">\n                <input id=\"phone_number\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'phone_number'\">\n                <label for=\"phone_number\">Phone Number</label>\n              </div>\n\n              <button class=\"btn flat\" (click)=\"savePatientDetails()\">Save</button>\n            </form>\n          </div>\n        </div>\n        <div class=\"patient-list dashboard-left\" id=\"patient-list-ajax\" (scroll)=\"getScrollData()\">\n          <div class=\"row\" style=\"margin-bottom: 0\">\n            <div class=\"col s12 m12 l12 dashboard-options\">\n              <a href=\"javascript: void(0);\" (click)=\"addDetails()\">\n                <i class=\"small material-icons right\" style=\"color: black\">add</i>\n              </a>\n              <a href=\"javascript: void(0);\" (click)=\"refreshDetails()\">\n                <i class=\"small material-icons right\" style=\"color: black\">refresh</i>\n              </a>\n            </div>\n            <div class=\"col s12 m12 l12 search-patient-background black-text\">\n              <div class=\"input-field search-patient\">\n                <i class=\"patient-search-icon material-icons prefix\">search</i>\n                <input placeholder=\"Search\" id=\"first_name\" type=\"text\" class=\"validate\">\n              </div>\n            </div>\n            <!-- Patient cards -->\n            <div *ngIf=\"patientDetails.length == 0\">\n              <div class=\"preloader-wrapper small active center-loader\">\n                <div class=\"spinner-layer spinner-green-only\">\n                  <div class=\"circle-clipper left\">\n                    <div class=\"circle\"></div>\n                  </div>\n                  <div class=\"gap-patch\">\n                    <div class=\"circle\"></div>\n                  </div>\n                  <div class=\"circle-clipper right\">\n                    <div class=\"circle\"></div>\n                  </div>\n                </div>\n              </div>\n            </div>\n            <div *ngFor=\"let patientDetail of patientDetails\">\n              <a href=\"javascript: void(0);\" (click)=\"showDetails(patientDetail.id)\">\n                <div class=\"col s12 m12 l12 white patient-info-card\">\n                  <div class=\"patient-name\">{{patientDetail.patient_name}}</div>\n                  <span class=\"patient-text\">#{{patientDetail.id}} | {{patientDetail.phone_number}}</span>\n                  <span class=\"right patient-date\">{{beautifyDate(patientDetail.date_created)}}</span>\n                </div>\n              </a>\n            </div>\n          </div>\n        </div>\n        <div class=\"card-content white-text\">\n          <div *ngIf=\"showMain\">\n            <a href=\"javascript: void(0);\" (click)=\"closeMain()\" style=\"\">\n              <i class=\"small material-icons right\" style=\"color: black\">close</i>\n            </a>\n            <form [formGroup]=\"patientEditDetailsJson\">\n              <span class=\"flow-text black-text\">ID: #{{patientEditDetailsJson.controls['id'].value}}</span>\n              <div class=\"input-field col s12 black-text\">\n                <input id=\"patient_name_edit\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'patient_name'\">\n              </div>\n              <div class=\"col s12\">\n                <span class=\"black-text\">Gender: {{patientEditDetailsJson.controls['gender'].value}}</span><br>\n                <input class=\"with-gap black-text\" type=\"radio\" value=\"male\" id=\"male_edit\" name=\"gender\"\n                       formControlName=\"gender\"/>\n                <label for=\"male_edit\">Male</label>\n                <input class=\"with-gap black-text\" type=\"radio\" value=\"female\" id=\"female_edit\" name=\"gender\"\n                       formControlName=\"gender\"/>\n                <label for=\"female_edit\">Female</label>\n              </div>\n              <div class=\"input-field col s12 black-text\">\n                <input id=\"email_edit\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'email'\">\n              </div>\n              <div class=\"input-field col s12 black-text\">\n                <input id=\"phone_number_edit\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'phone_number'\">\n              </div>\n              <div class=\"col s12\">\n                <button class=\"btn flat\" (click)=\"updatePatientDetails()\">Update</button>\n              </div>\n            </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"main-body\">\n  <div class=\"row\">\n    <div class=\"col s12 m12 l10 offset-l1\">\n      <div class=\"card horizontal z-depth-4 white-text patient-card\">\n\n        <!-- Left side of the card -->\n\n        <!-- Add details card which by default is hidden -->\n        <div class=\"patient-list dashboard-left add-details white black-text\" id=\"add-details\">\n          <div class=\"col s12 l12 m12\" style=\"padding-top: 40px;background: #2c2c2c;\">\n            <a href=\"javascript: void(0);\" (click)=\"addDetails()\">\n              <i class=\"small material-icons left\" style=\"color: white;padding: 10px;\">arrow_back</i>\n            </a>\n            <span class=\"flow-text white-text\" style=\"padding-top: 7px;position:absolute;\">Add Details</span>\n          </div>\n\n          <div class=\"col s12 m12 l12\">\n            <form [formGroup]=\"patientDetailsJson\">\n              <div class=\"input-field col s12\">\n                <input id=\"patient_name\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'patient_name'\">\n                <label for=\"patient_name\">Patient Name</label>\n              </div>\n              <div class=\"col s12\">\n                <input class=\"with-gap\" type=\"radio\" value=\"male\" id=\"male\" name=\"gender\" formControlName=\"gender\"/>\n                <label for=\"male\">Male</label>\n                <input class=\"with-gap\" type=\"radio\" value=\"female\" id=\"female\" name=\"gender\"\n                       formControlName=\"gender\"/>\n                <label for=\"female\">Female</label>\n              </div>\n              <div class=\"input-field col s12\">\n                <input id=\"email\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'email'\">\n                <label for=\"email\">Email</label>\n              </div>\n              <div class=\"input-field col s12\">\n                <input id=\"phone_number\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'phone_number'\">\n                <label for=\"phone_number\">Phone Number</label>\n              </div>\n\n              <button class=\"btn flat\" (click)=\"savePatientDetails()\">Save</button>\n            </form>\n          </div>\n        </div>\n\n        <!-- End of add details form -->\n\n        <!-- Left visible card -->\n        <div class=\"patient-list dashboard-left\" id=\"patient-list-ajax\" (scroll)=\"getScrollData()\">\n          <div class=\"row\" style=\"margin-bottom: 0\">\n            <div class=\"col s12 m12 l12 dashboard-options\">\n              <a href=\"javascript: void(0);\" (click)=\"addDetails()\">\n                <i class=\"small material-icons right\" style=\"color: black\">add</i>\n              </a>\n              <a href=\"javascript: void(0);\" (click)=\"refreshDetails()\">\n                <i class=\"small material-icons right\" style=\"color: black\">refresh</i>\n              </a>\n            </div>\n            <div class=\"col s12 m12 l12 search-patient-background black-text\">\n              <div class=\"input-field search-patient\">\n                <i class=\"patient-search-icon material-icons prefix\">search</i>\n                <input placeholder=\"Search\" id=\"first_name\" type=\"text\" class=\"validate\">\n              </div>\n            </div>\n\n            <!-- Patient cards -->\n\n            <!-- Show loader when loading -->\n            <div *ngIf=\"patientDetails.length == 0\">\n              <div class=\"preloader-wrapper small active center-loader\">\n                <div class=\"spinner-layer spinner-green-only\">\n                  <div class=\"circle-clipper left\">\n                    <div class=\"circle\"></div>\n                  </div>\n                  <div class=\"gap-patch\">\n                    <div class=\"circle\"></div>\n                  </div>\n                  <div class=\"circle-clipper right\">\n                    <div class=\"circle\"></div>\n                  </div>\n                </div>\n              </div>\n            </div>\n\n            <!-- Patient details show -->\n            <div *ngFor=\"let patientDetail of patientDetails\">\n              <a href=\"javascript: void(0);\" (click)=\"showDetails(patientDetail.id)\">\n                <div class=\"col s12 m12 l12 white patient-info-card\">\n                  <div class=\"patient-name\">{{ patientDetail.patient_name }}</div>\n                  <span class=\"patient-text\">#{{ patientDetail.id }} | {{ patientDetail.phone_number }}</span>\n                  <span class=\"right patient-date\">{{ beautifyDate(patientDetail.date_created)}}</span>\n                </div>\n              </a>\n            </div>\n          </div>\n        </div>\n\n        <!-- Right side of the card -->\n        <div class=\"card-content white-text\">\n\n          <!-- Show main content if clicked -->\n          <div *ngIf=\"showMain\">\n            <a href=\"javascript: void(0);\" (click)=\"closeMain()\" style=\"\">\n              <i class=\"small material-icons right\" style=\"color: black\">close</i>\n            </a>\n            <form [formGroup]=\"patientEditDetailsJson\">\n              <span class=\"flow-text black-text\">ID: #{{ patientEditDetailsJson.controls['id'].value}}</span>\n              <div class=\"input-field col s12 black-text\">\n                <input id=\"patient_name_edit\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'patient_name'\">\n              </div>\n              <div class=\"col s12\">\n                <span class=\"black-text\">Gender: {{ patientEditDetailsJson.controls['gender'].value}}</span><br>\n                <input class=\"with-gap black-text\" type=\"radio\" value=\"male\" id=\"male_edit\" name=\"gender\"\n                       formControlName=\"gender\"/>\n                <label for=\"male_edit\">Male</label>\n                <input class=\"with-gap black-text\" type=\"radio\" value=\"female\" id=\"female_edit\" name=\"gender\"\n                       formControlName=\"gender\"/>\n                <label for=\"female_edit\">Female</label>\n              </div>\n              <div class=\"input-field col s12 black-text\">\n                <input id=\"email_edit\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'email'\">\n              </div>\n              <div class=\"input-field col s12 black-text\">\n                <input id=\"phone_number_edit\" type=\"text\" class=\"validate\" data-length=\"50\"\n                       autocomplete=\"off\" [formControlName]=\"'phone_number'\">\n              </div>\n              <div class=\"col s12\">\n                <button class=\"btn flat\" (click)=\"updatePatientDetails()\">Update</button>\n              </div>\n            </form>\n          </div>\n\n          <!-- End of main content -->\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -522,8 +531,9 @@ var DashboardComponent = /** @class */ (function () {
     }
     DashboardComponent.prototype.ngOnInit = function () {
         var _this = this;
+        // Move scroll at the top where we are showing patient details
         document.getElementById('patient-list-ajax').scrollTo(0, 0);
-        console.log('trying');
+        // Get initial patient list
         this.dashboardService.getPatientList(false).subscribe(function (response) {
             console.log(response);
             if (response.next) {
@@ -536,6 +546,7 @@ var DashboardComponent = /** @class */ (function () {
             }
         });
     };
+    // Track scroll data and then load more data if we are at the end
     DashboardComponent.prototype.getScrollData = function () {
         var _this = this;
         var a = document.getElementById('patient-list-ajax').scrollTop;
@@ -560,6 +571,7 @@ var DashboardComponent = /** @class */ (function () {
             });
         }
     };
+    // Add patient details
     DashboardComponent.prototype.addDetails = function () {
         this.addInfo = !this.addInfo;
         if (this.addInfo) {
@@ -575,8 +587,10 @@ var DashboardComponent = /** @class */ (function () {
             document.getElementById('add-details').style.width = 0 + 'px';
         }
     };
+    // Refresh patient list and show latest data
     DashboardComponent.prototype.refreshDetails = function () {
         var _this = this;
+        this.complete = false;
         this.patientDetails = [];
         this.dashboardService.getPatientList(false).subscribe(function (response) {
             console.log(response);
@@ -590,6 +604,7 @@ var DashboardComponent = /** @class */ (function () {
             }
         });
     };
+    // On click show main card (right one) and update form group
     DashboardComponent.prototype.showDetails = function (id) {
         this.showMain = true;
         for (var i = 0; i < this.patientDetails.length; i++) {
@@ -605,6 +620,7 @@ var DashboardComponent = /** @class */ (function () {
             }
         }
     };
+    // Update patient data based on form control value
     DashboardComponent.prototype.updatePatientDetails = function () {
         var _this = this;
         this.dashboardService.updatePatientDetails(this.patientEditDetailsJson.getRawValue()).subscribe(function (response) {
@@ -620,6 +636,7 @@ var DashboardComponent = /** @class */ (function () {
             _this.refreshDetails();
         });
     };
+    // Close main card and clear data
     DashboardComponent.prototype.closeMain = function () {
         this.showMain = false;
         this.patientEditDetailsJson = this.formBuilder.group({
@@ -630,6 +647,7 @@ var DashboardComponent = /** @class */ (function () {
             gender: [''],
         });
     };
+    // Save patient details
     DashboardComponent.prototype.savePatientDetails = function () {
         var _this = this;
         this.dashboardService.savePatientDetails(this.patientDetailsJson.getRawValue()).subscribe(function (response) {
@@ -645,6 +663,7 @@ var DashboardComponent = /** @class */ (function () {
             Materialize.toast('Details Saved !', 4000);
         });
     };
+    // Show specified date
     DashboardComponent.prototype.beautifyDate = function (date) {
         return date.split('T')[0];
     };
