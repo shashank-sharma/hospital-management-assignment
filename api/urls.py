@@ -20,7 +20,9 @@ from accounts import views as accountviews
 
 # router = routers.DefaultRouter()
 # router.register(r'patient', PatientDetailsAPIView)
+from api.views import PatientDetailsAPIUpdate
 
 urlpatterns = [
     url(r'^login', accountviews.login),
+    url(r'^patient-details-update', PatientDetailsAPIUpdate.as_view()),
 ]
