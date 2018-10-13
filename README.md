@@ -24,6 +24,33 @@ In local testing it will make request to that production level API. Features inc
 6. User can scroll down to see more patient list
 7. Delete feature is not there and search feature is also not there
 
+
+### Use case
+
+User will go to the home page of the site and will be shown one Sign up page
+
+This page is interactive and have login and sign up section included. Transition is used to show animation
+like feature when we switch from signup to login. In signup we have client form validation so submit aciton
+only takes place once everything is properly entered. Password strength feature is used to show user
+how strong his password is with unique representation, once you will enter you will see the magic.
+
+Authentication page is mobile compatible and took a bit of time to do it. Yes it was not necessary but I really wanted to
+challenge myself on this.
+
+
+Once registered you will need to login with same credentials and after that you should see the dashboard.
+In dashboard you will see patient list in left and on right side is our main content section. On left side if you scroll down you
+will dynamically load more patient data, so it is just like pagination feature. Clicking on any patient card will show
+options to edit it in right side of our main card. Once edit you can update and it will be saved.
+
+API's:
+
+http://hospi.herokuapp.com/api/v1/users/    - Show all authenticated users
+http://hospi.herokuapp.com/api/v1/patient/  - All patient list data with limit feature (pagination)
+http://hospi.herokuapp.com/api/patient-details-update  - To update patient data
+http://hospi.herokuapp.com/api/login - To login and get id with token
+
+
 ### Installation
 
 1. Create virtual environment:
