@@ -64,4 +64,4 @@ class PatientDetailsAPIUpdate(APIView):
 
 
 def home(request):
-    return render('index.html')
+    return render(request, 'index.html')
