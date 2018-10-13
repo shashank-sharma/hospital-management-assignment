@@ -18,9 +18,7 @@ export class AuthenticationService {
 
   registerUser(json) {
     console.log(json);
-    this.http.post(environment.apiUrl + '/api/v1/users/', json, this.httpOptions).subscribe((response: any) => {
-      return !!response.id;
-    });
+    return this.http.post(environment.apiUrl + '/api/v1/users/', json, this.httpOptions)
   }
 
   loginUser(json) {

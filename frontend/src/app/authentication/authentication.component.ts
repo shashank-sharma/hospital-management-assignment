@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from '../../environments/environment';
@@ -55,7 +55,7 @@ export class AuthenticationComponent implements OnInit {
   ngOnInit() {
     if (window.screen.width < 1200) {
       console.log('yes');
-        document.getElementById('login').style.width = 0 + 'px';
+      document.getElementById('login').style.width = 0 + 'px';
     }
   }
 
@@ -82,6 +82,7 @@ export class AuthenticationComponent implements OnInit {
   verifyDob(dob) {
     return dob.length > 1;
   }
+
   checkStrength(password) {
     console.log(password);
     const passwordStatus = document.getElementsByClassName('password-status-text')[0];
@@ -152,13 +153,14 @@ export class AuthenticationComponent implements OnInit {
 
   checkRegisterStatus() {
     this.registerLoad = true;
-    const data = this.authenticationService.registerUser(this.inputJson.getRawValue());
-    if (data) {
-      this.registerLoad = false;
-      Materialize.toast('Successfully Registed', 4000);
-      Materialize.toast('Now please log in', 4000);
-      this.changePage();
-    }
+    const data = this.authenticationService.registerUser(this.inputJson.getRawValue()).subscribe((response: any) => {
+      if (response.id) {
+        this.registerLoad = false;
+        Materialize.toast('Successfully Registed', 4000);
+        Materialize.toast('Now please log in', 4000);
+        this.changePage();
+      }
+    });
   }
 
 }
