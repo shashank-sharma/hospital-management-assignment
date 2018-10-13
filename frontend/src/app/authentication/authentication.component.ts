@@ -154,6 +154,7 @@ export class AuthenticationComponent implements OnInit {
   checkRegisterStatus() {
     this.registerLoad = true;
     const data = this.authenticationService.registerUser(this.inputJson.getRawValue()).subscribe((response: any) => {
+      console.log(response);
       if (response.id) {
         this.registerLoad = false;
         Materialize.toast('Successfully Registed', 4000);

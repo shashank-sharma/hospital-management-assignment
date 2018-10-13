@@ -168,9 +168,7 @@ var AuthenticationService = /** @class */ (function () {
     }
     AuthenticationService.prototype.registerUser = function (json) {
         console.log(json);
-        this.http.post(__WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].apiUrl + '/api/v1/users/', json, this.httpOptions).subscribe(function (response) {
-            return !!response.id;
-        });
+        return this.http.post(__WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].apiUrl + '/api/v1/users/', json, this.httpOptions);
     };
     AuthenticationService.prototype.loginUser = function (json) {
         return this.http.post(__WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].apiUrl + '/api/login', json, this.httpOptions);
@@ -368,14 +366,17 @@ var AuthenticationComponent = /** @class */ (function () {
         });
     };
     AuthenticationComponent.prototype.checkRegisterStatus = function () {
+        var _this = this;
         this.registerLoad = true;
-        var data = this.authenticationService.registerUser(this.inputJson.getRawValue());
-        if (data) {
-            this.registerLoad = false;
-            Materialize.toast('Successfully Registed', 4000);
-            Materialize.toast('Now please log in', 4000);
-            this.changePage();
-        }
+        var data = this.authenticationService.registerUser(this.inputJson.getRawValue()).subscribe(function (response) {
+            console.log(response);
+            if (response.id) {
+                _this.registerLoad = false;
+                Materialize.toast('Successfully Registed', 4000);
+                Materialize.toast('Now please log in', 4000);
+                _this.changePage();
+            }
+        });
     };
     AuthenticationComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
