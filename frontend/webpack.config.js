@@ -151,7 +151,7 @@ module.exports = {
     "filename": "[name].bundle.js",
     "chunkFilename": "[id].chunk.js",
     "crossOriginLoading": false,
-    "publicPath":"http://hospi.herokuapp.com/"
+    "publicPath":"http://hospi.herokuapp.com/ang/"
   },
   "module": {
     "rules": [
@@ -539,6 +539,6 @@ module.exports = {
   },
   "devServer": {
     "historyApiFallback": true,
-    "publicPath":"http://hospi.herokuapp.com/"
+    "publicPath":"http://hospi.herokuapp.com/ang/"
   }
 };
