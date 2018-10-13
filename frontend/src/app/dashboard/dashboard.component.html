@@ -3,6 +3,9 @@
     <div class="col s12 m12 l10 offset-l1">
       <div class="card horizontal z-depth-4 white-text patient-card">
 
+        <!-- Left side of the card -->
+
+        <!-- Add details card which by default is hidden -->
         <div class="patient-list dashboard-left add-details white black-text" id="add-details">
           <div class="col s12 l12 m12" style="padding-top: 40px;background: #2c2c2c;">
             <a href="javascript: void(0);" (click)="addDetails()">
@@ -40,6 +43,10 @@
             </form>
           </div>
         </div>
+
+        <!-- End of add details form -->
+
+        <!-- Left visible card -->
         <div class="patient-list dashboard-left" id="patient-list-ajax" (scroll)="getScrollData()">
           <div class="row" style="margin-bottom: 0">
             <div class="col s12 m12 l12 dashboard-options">
@@ -56,7 +63,10 @@
                 <input placeholder="Search" id="first_name" type="text" class="validate">
               </div>
             </div>
+
             <!-- Patient cards -->
+
+            <!-- Show loader when loading -->
             <div *ngIf="patientDetails.length == 0">
               <div class="preloader-wrapper small active center-loader">
                 <div class="spinner-layer spinner-green-only">
@@ -72,30 +82,36 @@
                 </div>
               </div>
             </div>
+
+            <!-- Patient details show -->
             <div *ngFor="let patientDetail of patientDetails">
               <a href="javascript: void(0);" (click)="showDetails(patientDetail.id)">
                 <div class="col s12 m12 l12 white patient-info-card">
-                  <div class="patient-name">{{patientDetail.patient_name}}</div>
-                  <span class="patient-text">#{{patientDetail.id}} | {{patientDetail.phone_number}}</span>
-                  <span class="right patient-date">{{beautifyDate(patientDetail.date_created)}}</span>
+                  <div class="patient-name">{{ patientDetail.patient_name }}</div>
+                  <span class="patient-text">#{{ patientDetail.id }} | {{ patientDetail.phone_number }}</span>
+                  <span class="right patient-date">{{ beautifyDate(patientDetail.date_created)}}</span>
                 </div>
               </a>
             </div>
           </div>
         </div>
+
+        <!-- Right side of the card -->
         <div class="card-content white-text">
+
+          <!-- Show main content if clicked -->
           <div *ngIf="showMain">
             <a href="javascript: void(0);" (click)="closeMain()" style="">
               <i class="small material-icons right" style="color: black">close</i>
             </a>
             <form [formGroup]="patientEditDetailsJson">
-              <span class="flow-text black-text">ID: #{{patientEditDetailsJson.controls['id'].value}}</span>
+              <span class="flow-text black-text">ID: #{{ patientEditDetailsJson.controls['id'].value}}</span>
               <div class="input-field col s12 black-text">
                 <input id="patient_name_edit" type="text" class="validate" data-length="50"
                        autocomplete="off" [formControlName]="'patient_name'">
               </div>
               <div class="col s12">
-                <span class="black-text">Gender: {{patientEditDetailsJson.controls['gender'].value}}</span><br>
+                <span class="black-text">Gender: {{ patientEditDetailsJson.controls['gender'].value}}</span><br>
                 <input class="with-gap black-text" type="radio" value="male" id="male_edit" name="gender"
                        formControlName="gender"/>
                 <label for="male_edit">Male</label>
@@ -116,6 +132,8 @@
               </div>
             </form>
           </div>
+
+          <!-- End of main content -->
         </div>
       </div>
     </div>

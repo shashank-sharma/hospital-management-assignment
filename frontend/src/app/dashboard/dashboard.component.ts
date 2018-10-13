@@ -37,8 +37,11 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    // Move scroll at the top where we are showing patient details
     document.getElementById('patient-list-ajax').scrollTo(0, 0);
-    console.log('trying');
+
+    // Get initial patient list
     this.dashboardService.getPatientList(false).subscribe((response: any) => {
       console.log(response);
       if (response.next) {
@@ -51,6 +54,7 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  // Track scroll data and then load more data if we are at the end
   getScrollData() {
     let a = document.getElementById('patient-list-ajax').scrollTop;
     let b = document.getElementById('patient-list-ajax').offsetHeight;
@@ -74,6 +78,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // Add patient details
   addDetails() {
     this.addInfo = !this.addInfo;
     if (this.addInfo) {
@@ -89,6 +94,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // Refresh patient list and show latest data
   refreshDetails() {
     this.patientDetails = [];
     this.dashboardService.getPatientList(false).subscribe((response: any) => {
@@ -103,6 +109,7 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  // On click show main card (right one) and update form group
   showDetails(id) {
     this.showMain = true;
     for(let i = 0; i < this.patientDetails.length; i++) {
@@ -119,6 +126,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // Update patient data based on form control value
   updatePatientDetails() {
     this.dashboardService.updatePatientDetails(this.patientEditDetailsJson.getRawValue()).subscribe((response: any) => {
       this.patientEditDetailsJson = this.formBuilder.group({
@@ -134,6 +142,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // Close main card and clear data
   closeMain() {
     this.showMain = false;
     this.patientEditDetailsJson = this.formBuilder.group({
@@ -145,6 +154,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // Save patient details
   savePatientDetails() {
     this.dashboardService.savePatientDetails(this.patientDetailsJson.getRawValue()).subscribe((response: any) => {
       document.getElementById('add-details').style.width = 0 + 'px';
@@ -160,6 +170,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // Show specified date
   beautifyDate(date: string) {
     return date.split('T')[0];
   }

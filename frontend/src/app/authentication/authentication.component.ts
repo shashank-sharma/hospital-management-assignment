@@ -33,6 +33,7 @@ export class AuthenticationComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private router: Router) {
 
+    // Set up initial values
     this.inputJson = this.formBuilder.group({
       phone_number: [''],
       first_name: [''],
@@ -46,6 +47,7 @@ export class AuthenticationComponent implements OnInit {
       password: [''],
     });
 
+    // On value change validate
     this.inputJson.valueChanges.subscribe(val => {
       this.validateForm();
     });
@@ -53,11 +55,15 @@ export class AuthenticationComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Make sure it is mobile compatible
     if (window.screen.width < 1200) {
       console.log('yes');
       document.getElementById('login').style.width = 0 + 'px';
     }
   }
+
+  // Verify all input fields
+
 
   verifyPhoneNumber(phone_number) {
     return phone_number.length >= 8 && phone_number.length < 11;
@@ -83,6 +89,7 @@ export class AuthenticationComponent implements OnInit {
     return dob.length > 1;
   }
 
+  // Check password strength based of regex
   checkStrength(password) {
     console.log(password);
     const passwordStatus = document.getElementsByClassName('password-status-text')[0];
@@ -108,6 +115,7 @@ export class AuthenticationComponent implements OnInit {
     document.getElementById('small-password').style.width = 20 * this.strength + '%';
   }
 
+  // Client side form validation
   validateForm() {
     console.log(this.inputJson.getRawValue());
     // User name is there or not
@@ -119,6 +127,7 @@ export class AuthenticationComponent implements OnInit {
     console.log(this.phone_number, this.first_name, this.password, this.gender, this.last_name);
   }
 
+  // Change page from signup to log in and likewise
   changePage() {
     console.log('asd =', window.screen.width);
     if (window.screen.width > 1200) {
@@ -138,6 +147,7 @@ export class AuthenticationComponent implements OnInit {
     this.signup = !this.signup;
   }
 
+  // Login user and redirect him to dashboard by saving token and id in localstorage
   checkLoginStatus() {
     this.loginLoad = true;
     this.authenticationService.loginUser(this.loginJson.getRawValue()).subscribe((response: any) => {
@@ -151,6 +161,7 @@ export class AuthenticationComponent implements OnInit {
     })
   }
 
+  // Register given user and ask him to log in
   checkRegisterStatus() {
     this.registerLoad = true;
     const data = this.authenticationService.registerUser(this.inputJson.getRawValue()).subscribe((response: any) => {

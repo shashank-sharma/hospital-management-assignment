@@ -23,7 +23,7 @@ router.register(r'users', UserViewSet)
 router.register(r'patient', PatientDetailsAPIView)
 
 urlpatterns = [
-    url(r'^$',home),
+    url(r'^$', home),
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/', include(router.urls)),
     url(r'^api/', include('api.urls')),
