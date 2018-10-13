@@ -2,6 +2,8 @@
 
 Simple web portal to update the patient records and have authentication system
 
+Demo: https://youtu.be/N2kwFsGCYRA
+
 ### Technical Stack
 
 1. Angular 5 (Because Angular 6 support was not there with this project structure)
