@@ -14,8 +14,6 @@ Demo: https://youtu.be/N2kwFsGCYRA
 
 I have set up API server live at heroku server and it is my final Angular project live at:
 
-URL: http://hospi.herokuapp.com
-
 In local testing it will make request to that production level API. Features included:
 
 1. User can register
